@@ -12,17 +12,22 @@ public class PlayerScripts : MonoBehaviour
     private float _dirY;
     [SerializeField]
     private bool _canDoubleJump = false;
-
+    [Space(5)]
     [Header("Changeable Player Variable")]
     [SerializeField] private float _playerSpd = 10f;
     [SerializeField] private bool _isGrouded;
     [SerializeField] private float _gravityValue = 1;
     [SerializeField] private float _jumpSpeed = 15.0f;
 
+    [Space(5)]
+    [Header("GameObject Caller")]
+    private GameManager _gM;
+
     void Awake()
     {
 
         _characterController = this.GetComponent<CharacterController>();
+        _gM = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
 
     }
 
@@ -32,7 +37,6 @@ public class PlayerScripts : MonoBehaviour
         PlayerController();
 
     }
-
 
     #region Player_Movement
 
@@ -115,6 +119,18 @@ public class PlayerScripts : MonoBehaviour
             }
 
         }
+
+    }
+
+    #endregion
+
+
+    #region TriggerEnter, TriggerStay or TriggerExit
+
+    private void OnTriggerEnter(Collider other)
+    {
+        
+
 
     }
 
