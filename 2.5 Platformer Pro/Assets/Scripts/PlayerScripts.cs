@@ -12,6 +12,11 @@ public class PlayerScripts : MonoBehaviour
     private float _dirY;
     [SerializeField]
     private bool _canDoubleJump = false;
+    [SerializeField]
+    private int _playerLives = 3;
+    [SerializeField]
+    private string sceneName = "Level";
+
     [Space(5)]
     [Header("Changeable Player Variable")]
     [SerializeField] private float _playerSpd = 10f;
@@ -22,6 +27,7 @@ public class PlayerScripts : MonoBehaviour
     [Space(5)]
     [Header("GameObject Caller")]
     private GameManager _gM;
+    [SerializeField] private GameObject _respawnPosition;
 
     void Awake()
     {
@@ -34,7 +40,8 @@ public class PlayerScripts : MonoBehaviour
     void Update()
     {
 
-        PlayerController();
+        IsPlayerDead();
+        _gM.UpdatePlayerLivesDisplay(_playerLives);
 
     }
 
@@ -124,13 +131,54 @@ public class PlayerScripts : MonoBehaviour
 
     #endregion
 
-
     #region TriggerEnter, TriggerStay or TriggerExit
 
     private void OnTriggerEnter(Collider other)
     {
-        
 
+        if (other.tag == "checkpoint")
+        {
+
+            _respawnPosition = other.gameObject;
+
+        }
+
+        if (other.tag == "DeadZone")
+        {
+
+            Damage();
+            _characterController.enabled = false;
+            this.transform.position = _respawnPosition.transform.position;
+            _characterController.enabled = true;
+
+        }
+
+    }
+
+    #endregion
+
+    #region PlayerLivesSystem
+
+    public void Damage()
+    {
+
+        _playerLives--;
+
+    }
+
+    private void IsPlayerDead()
+    {
+
+        if (_playerLives < 1)
+        {
+
+            _gM.LoadScene(sceneName);
+
+        }
+        else
+        {
+            PlayerController();
+        }
 
     }
 

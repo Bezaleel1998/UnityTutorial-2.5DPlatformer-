@@ -6,6 +6,8 @@ TagManager:
   tags:
   - GameManager
   - Coin
+  - DeadZone
+  - checkpoint
   layers:
   - Default
   - TransparentFX

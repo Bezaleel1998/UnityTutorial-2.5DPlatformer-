@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -9,11 +10,12 @@ public class GameManager : MonoBehaviour
     [Header("Variable Element")]
     [SerializeField]
     private int _playerScore;
-    private int _playerHighscore;
+    private int _playerOldHighscore;
 
     [Space(5)]
     [Header("UI Element")]
     public Text scoreText;
+    public Text playerLivesText;
 
     private void Awake()
     {
@@ -53,15 +55,37 @@ public class GameManager : MonoBehaviour
     private void HighScoreDetection()
     {
 
-        _playerHighscore = PlayerPrefs.GetInt("PlayerHighScore");
+        _playerOldHighscore = PlayerPrefs.GetInt("PlayerHighScore");
 
-        if (_playerHighscore < _playerScore)
+        if (_playerOldHighscore < _playerScore)
         {
 
             PlayerPrefs.SetInt("PlayerHighScore", _playerScore);
-            _playerHighscore = _playerScore;
+            _playerOldHighscore = _playerScore;
 
         }
+
+    }
+
+    #endregion
+
+    #region PlayerLivesUISystem
+
+    public void UpdatePlayerLivesDisplay(int lives)
+    {
+
+        playerLivesText.text = "<color=red>Player Lives : " + lives.ToString() + "</color>";
+
+    }
+
+    #endregion
+
+    #region SceneManager
+
+    public void LoadScene(string sceneName)
+    {
+
+        SceneManager.LoadScene(sceneName);
 
     }
 
